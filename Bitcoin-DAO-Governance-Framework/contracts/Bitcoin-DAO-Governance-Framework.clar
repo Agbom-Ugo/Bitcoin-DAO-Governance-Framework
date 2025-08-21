@@ -316,3 +316,64 @@
     last-claim-block: uint
   }
 )
+
+(define-data-var staking-rewards-rate uint u5) ;; 5 basis points per block
+(define-data-var staking-rewards-pool uint u0)
+
+;; Community Treasury and Grants
+(define-map community-fund-proposals
+  {
+    fund-id: uint
+  }
+  {
+    applicant: principal,
+    requested-amount: uint,
+    category: (string-ascii 50),
+    milestones: (list 5 {
+      description: (string-ascii 100),
+      amount: uint,
+      completed: bool
+    }),
+    approved: bool,
+    votes-needed: uint,
+    votes-received: uint,
+    proposal-id: uint
+  }
+)
+
+(define-data-var next-fund-id uint u0)
+(define-data-var community-treasury-balance uint u0)
+
+;; Multi-signature Transaction System
+(define-map multisig-transactions
+  {
+    transaction-id: uint
+  }
+  {
+    creator: principal,
+    contract-to-call: principal,
+    function-to-call: (string-ascii 128),
+    function-args: (list 10 (buff 256)),
+    required-signatures: uint,
+    signers: (list 10 principal),
+    executed: bool,
+    created-at-block: uint,
+    expiration-block: uint
+  }
+)
+
+(define-data-var next-transaction-id uint u0)
+
+;; Reputation and Governance Tiers
+(define-map governance-tiers
+  {
+    tier-level: uint
+  }
+  {
+    name: (string-ascii 50),
+    min-reputation: uint,
+    voting-power-multiplier: uint,
+    proposal-discount: uint,
+    special-rights: (list 5 (string-ascii 50))
+  }
+)
